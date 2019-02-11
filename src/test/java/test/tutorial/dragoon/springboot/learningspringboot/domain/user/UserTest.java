@@ -13,28 +13,36 @@ class UserTest {
     private User testUser;
 
     @BeforeEach
-    public void setUp(){
-        testUser = new User(UUID.randomUUID(),"jakis", "ciezkiehaslo","jan","kowalski","jan@kowalski.com");
+    public void setUp() {
+        testUser = new User(UUID.randomUUID(), "jakis", "ciezkiehaslo", "jan", "kowalski", "jan@kowalski.com");
     }
 
     @Test
-    @DisplayName("Test for changing status from NEW to ACTIVE")
+    @DisplayName("Test ACTIVE status")
     void userStatusNewActive() {
         testUser.confirmEmail();
         assertEquals(testUser.getStatus(), User.Status.ACTIVE);
     }
 
     @Test
-    @DisplayName("Test for changing status from NEW to NOT_CONFIRMED")
+    @DisplayName("Test NOT_CONFIRMED status")
     void userStatusNewNotConfirmed() {
         testUser.notConfirmedEmail();
         assertEquals(testUser.getStatus(), User.Status.NOT_CONFIRMED);
     }
 
     @Test
-    @DisplayName("Test for changing status from ACTIVE to NOT_CONFIRMED")
+    @DisplayName("Test DELETED status")
+    void userStatusDeleted() {
+        testUser.notConfirmedEmail();
+        testUser.deleteUser();
+        assertEquals(testUser.getStatus(), User.Status.DELETED);
+    }
+
+    @Test
+    @DisplayName("Test NOT_CONFIRMED status when failed")
     void userStatusActiveNotConfirmed() {
         testUser.confirmEmail();
-        assertThrows(DomainLogicException.class,()->testUser.notConfirmedEmail());
+        assertThrows(DomainLogicException.class, () -> testUser.notConfirmedEmail());
     }
 }
