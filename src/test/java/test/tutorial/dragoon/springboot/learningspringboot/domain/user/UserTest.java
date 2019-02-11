@@ -18,21 +18,21 @@ class UserTest {
     }
 
     @Test
-    @DisplayName("Test ACTIVE status")
+    @DisplayName("Should change status from NEW to ACTIVE")
     void userStatusNewActive() {
         testUser.confirmEmail();
         assertEquals(testUser.getStatus(), User.Status.ACTIVE);
     }
 
     @Test
-    @DisplayName("Test NOT_CONFIRMED status")
+    @DisplayName("Should change status from NEW to NOT_CONFIRMED")
     void userStatusNewNotConfirmed() {
         testUser.notConfirmedEmail();
         assertEquals(testUser.getStatus(), User.Status.NOT_CONFIRMED);
     }
 
     @Test
-    @DisplayName("Test DELETED status")
+    @DisplayName("Should change status from ACTIVE to DELETED")
     void userStatusDeleted() {
         testUser.notConfirmedEmail();
         testUser.deleteUser();
@@ -40,7 +40,7 @@ class UserTest {
     }
 
     @Test
-    @DisplayName("Test NOT_CONFIRMED status when failed")
+    @DisplayName("Should throw exception when try to change status from ACTIVE to NOT_CONFIRMED")
     void userStatusActiveNotConfirmed() {
         testUser.confirmEmail();
         assertThrows(DomainLogicException.class, () -> testUser.notConfirmedEmail());
