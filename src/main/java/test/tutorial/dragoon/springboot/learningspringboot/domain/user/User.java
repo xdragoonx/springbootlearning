@@ -2,9 +2,12 @@ package test.tutorial.dragoon.springboot.learningspringboot.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.*;
 
 import test.tutorial.dragoon.springboot.learningspringboot.domain.exceptions.DomainLogicException;
 
+@Entity
+@Table(name = "user")
 public class User {
     public enum Status {
         NEW,
@@ -13,16 +16,29 @@ public class User {
         NOT_CONFIRMED
     }
 
-    private final UUID id;
-    private final String login;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(length = 36, unique = true, nullable = false)
+    private UUID id;
+    @Column(length = 40, nullable = false)
+    private String login;
+    @Column(nullable = false)
     private String password;
+    @Column(length = 40, nullable = false)
     private String name;
+    @Column(length = 40, nullable = false)
     private String surname;
+    @Column(length = 100, nullable = false)
     private String email;
-    private final LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+    @Column(name = "modified_at", nullable = false)
     private LocalDateTime modifiedAt;
+    @Column(length = 15, nullable = false)
     private Status status;
 
+    public User() {
+    }
 
     public User(UUID id, String login, String password, String name, String surname, String email) {
         this.id = id;
