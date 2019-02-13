@@ -20,13 +20,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 36, unique = true, nullable = false)
     private UUID id;
-    @Column(length = 35, nullable = false)
+    @Column(length = 40, nullable = false)
     private String login;
     @Column(nullable = false)
     private String password;
-    @Column(length = 35, nullable = false)
+    @Column(length = 40, nullable = false)
     private String name;
-    @Column(length = 35, nullable = false)
+    @Column(length = 40, nullable = false)
     private String surname;
     @Column(length = 100, nullable = false)
     private String email;
