@@ -7,4 +7,4 @@ before_install:
   - chmod +x mvnw
 
 script:
-  - ./mvnw verify
+  - ./mvnw verify -P integration-tests
