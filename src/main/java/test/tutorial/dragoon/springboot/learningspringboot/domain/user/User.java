@@ -16,7 +16,6 @@ public class User {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 36, unique = true, nullable = false)
     private UUID id;
     @Column(length = 40, nullable = false)
