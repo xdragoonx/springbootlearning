@@ -7,15 +7,13 @@ public class UserCreationDTO {
     private String name;
     private String surname;
     private String email;
-    private String status;
 
-    public UserCreationDTO(String login, String password, String name, String surname, String email, String status) {
+    public UserCreationDTO(String login, String password, String name, String surname, String email) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.status = status;
     }
 
     public String getLogin() {
@@ -38,7 +36,4 @@ public class UserCreationDTO {
         return email;
     }
 
-    public String getStatus() {
-        return status;
-    }
 }

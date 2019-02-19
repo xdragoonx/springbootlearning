@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import test.tutorial.dragoon.springboot.learningspringboot.domain.user.User;
 import test.tutorial.dragoon.springboot.learningspringboot.domain.user.UserRepository;
+import test.tutorial.dragoon.springboot.learningspringboot.dto.UserCreationDTO;
 
 import java.util.UUID;
 
@@ -35,8 +36,9 @@ class UserCreationHandlerIT {
     @DisplayName("UserCreation")
     void userCreation() {
         UUID id = UUID.randomUUID();
-        User user = new User(id, "jakislogin", "jakieshaslo", "iemie", "nazwisko", "jakis@mail.com");
-        repository.findById(id);
+        UserCreationDTO user = new UserCreationDTO("jakislogin", "jakieshaslo", "iemie", "nazwisko", "jakis@mail.com");
+        handler.handle(id, user);
+        assertTrue(repository.findById(id).isPresent());
     }
 
 }
