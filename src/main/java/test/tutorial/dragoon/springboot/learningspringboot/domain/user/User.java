@@ -1,10 +1,9 @@
 package test.tutorial.dragoon.springboot.learningspringboot.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.*;
-
-import test.tutorial.dragoon.springboot.learningspringboot.domain.exceptions.DomainLogicException;
 
 @Entity
 @Table(name = "user")
@@ -17,7 +16,6 @@ public class User {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 36, unique = true, nullable = false)
     private UUID id;
     @Column(length = 40, nullable = false)
@@ -88,6 +86,31 @@ public class User {
         return status;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return id.equals(user.id)
+                && login.equals(user.login)
+                && password.equals(user.password)
+                && name.equals(user.name)
+                && surname.equals(user.surname)
+                && email.equals(user.email)
+                && createdAt.equals(user.createdAt)
+                && modifiedAt.equals(user.modifiedAt)
+                && status == user.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, name, surname, email, createdAt, modifiedAt, status);
+    }
+
     private boolean isReadyToOutDate() {
         return status.equals(Status.NEW);
     }
@@ -99,7 +122,7 @@ public class User {
 
     public void notConfirmedEmail() {
         if (!isReadyToOutDate()) {
-            throw new DomainLogicException("You can't change status to " + Status.NOT_CONFIRMED + ", because of "
+            throw new UserDomainLogicException("You can't change status to " + Status.NOT_CONFIRMED + ", because of "
                     + "current status: " + status + ", for user " + id);
         }
         status = Status.NOT_CONFIRMED;
