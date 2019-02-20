@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import test.tutorial.dragoon.springboot.learningspringboot.domain.user.User;
 import test.tutorial.dragoon.springboot.learningspringboot.domain.user.UserRepository;
 import test.tutorial.dragoon.springboot.learningspringboot.dto.UserCreationDTO;
 
@@ -27,13 +26,7 @@ class UserCreationHandlerIT {
     private UserRepository repository;
 
     @Test
-    @DisplayName("TBD")
-    void testCreation() {
-        assertTrue(true);
-    }
-
-    @Test
-    @DisplayName("UserCreation")
+    @DisplayName("Should create and save user from DTO")
     void userCreation() {
         UUID id = UUID.randomUUID();
         UserCreationDTO user = new UserCreationDTO("jakislogin", "jakieshaslo", "iemie", "nazwisko", "jakis@mail.com");
