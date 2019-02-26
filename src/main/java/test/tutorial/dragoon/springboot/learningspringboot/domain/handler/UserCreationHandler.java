@@ -13,16 +13,17 @@ import test.tutorial.dragoon.springboot.learningspringboot.dto.UserCreationDTO;
 public class UserCreationHandler {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserCreationHandler(UserRepository repository) {
+    public UserCreationHandler(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void handle(UUID id, UserCreationDTO dto) {
-        PasswordEncoder password = new PasswordEncoder(dto.getPassword());
-        User user = new User(id, dto.getLogin(), password.passwordEncode(), dto.getName(), dto.getSurname(),
-                dto.getEmail());
+        User user = new User(id, dto.getLogin(), passwordEncoder.encode(dto.getPassword()), dto.getName(),
+                dto.getSurname(), dto.getEmail());
         repository.save(user);
     }
 }

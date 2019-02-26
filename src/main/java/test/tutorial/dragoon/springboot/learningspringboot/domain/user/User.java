@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "user")
@@ -18,15 +19,16 @@ public class User {
     @Id
     @Column(length = 36, unique = true, nullable = false)
     private UUID id;
-    @Column(length = 40, nullable = false)
+    @Column(length = 40, nullable = false, unique = true)
     private String login;
-    @Column(nullable = false)
+    @Column(length = 60, nullable = false)
     private String password;
     @Column(length = 40, nullable = false)
     private String name;
     @Column(length = 40, nullable = false)
     private String surname;
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
+    @Email
     private String email;
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
