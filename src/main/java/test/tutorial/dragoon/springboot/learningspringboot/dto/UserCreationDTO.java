@@ -1,11 +1,23 @@
 package test.tutorial.dragoon.springboot.learningspringboot.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class UserCreationDTO {
 
+    @NotEmpty
+    @Size(min = 1, max = 40)
     private String login;
+    @NotEmpty
     private String password;
+    @NotEmpty
+    @Size(min = 1, max = 40)
     private String name;
+    @NotEmpty
+    @Size(min = 1, max = 40)
     private String surname;
+    @NotEmpty
+    @Size(min = 1, max = 100)
     private String email;
 
     public UserCreationDTO(String login, String password, String name, String surname, String email) {

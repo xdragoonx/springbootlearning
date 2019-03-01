@@ -3,7 +3,6 @@ package test.tutorial.dragoon.springboot.learningspringboot.domain.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import test.tutorial.dragoon.springboot.learningspringboot.domain.DomainLogicException;
 
 import java.util.UUID;
 
@@ -43,6 +42,7 @@ class UserTest {
     @DisplayName("Should throw exception when try to change status from ACTIVE to NOT_CONFIRMED")
     void userStatusActiveNotConfirmed() {
         testUser.confirmEmail();
-        assertThrows(DomainLogicException.class, () -> testUser.notConfirmedEmail());
+        assertThrows(UserDomainLogicException.class, () -> testUser.notConfirmedEmail());
     }
+
 }
