@@ -22,8 +22,9 @@ public class UserCreationHandler {
     }
 
     public void handle(UUID id, UserCreationDTO dto) {
-        User user = new User(id, dto.getLogin(), passwordEncoder.encode(dto.getPassword()), dto.getName(),
-                dto.getSurname(), dto.getEmail());
+        User user = repository.findById(id).orElseGet(() -> new User(id, dto.getLogin(),
+                passwordEncoder.encode(dto.getPassword()), dto.getName(), dto.getSurname(), dto.getEmail()));
+        user.setUserData(dto.getName(), dto.getSurname(), dto.getEmail());
         repository.save(user);
     }
 }

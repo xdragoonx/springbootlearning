@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "user")
@@ -17,19 +16,14 @@ public class User {
     }
 
     @Id
-    @Column(length = 36, unique = true, nullable = false)
+    @Column(length = 16, updatable = false, unique = true, nullable = false)
     private UUID id;
     @Column(length = 40, nullable = false, unique = true)
     private String login;
     @Column(length = 60, nullable = false)
     private String password;
-    @Column(length = 40, nullable = false)
-    private String name;
-    @Column(length = 40, nullable = false)
-    private String surname;
-    @Column(length = 100, nullable = false, unique = true)
-    @Email
-    private String email;
+    @Embedded
+    private UserData userData;
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
     @Column(name = "modified_at", nullable = false)
@@ -44,9 +38,7 @@ public class User {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
+        this.userData = new UserData(name, surname, email);
         this.status = status.NEW;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
@@ -64,16 +56,20 @@ public class User {
         return password;
     }
 
+    public void setUserData(String name, String surname, String email) {
+        this.userData = new UserData(name, surname, email);
+    }
+
     public String getName() {
-        return name;
+        return userData.getName();
     }
 
     public String getSurname() {
-        return surname;
+        return userData.getSurname();
     }
 
     public String getEmail() {
-        return email;
+        return userData.getEmail();
     }
 
     public LocalDateTime getCreatedAt() {
@@ -88,21 +84,20 @@ public class User {
         return status;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof User)) {
             return false;
         }
         User user = (User) o;
         return id.equals(user.id)
                 && login.equals(user.login)
                 && password.equals(user.password)
-                && name.equals(user.name)
-                && surname.equals(user.surname)
-                && email.equals(user.email)
+                && userData.equals(user.userData)
                 && createdAt.equals(user.createdAt)
                 && modifiedAt.equals(user.modifiedAt)
                 && status == user.status;
@@ -110,7 +105,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, name, surname, email, createdAt, modifiedAt, status);
+        return Objects.hash(id, login, password, userData, createdAt, modifiedAt, status);
     }
 
     private boolean isReadyToOutDate() {
