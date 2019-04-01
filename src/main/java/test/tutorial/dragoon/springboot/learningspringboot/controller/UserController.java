@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import test.tutorial.dragoon.springboot.learningspringboot.domain.handler.UserCreationHandler;
+import test.tutorial.dragoon.springboot.learningspringboot.domain.handler.UserEditOrCreateHandler;
 import test.tutorial.dragoon.springboot.learningspringboot.dto.UserCreationDTO;
 import test.tutorial.dragoon.springboot.learningspringboot.response.UUIDResponse;
 
@@ -14,25 +15,27 @@ import test.tutorial.dragoon.springboot.learningspringboot.response.UUIDResponse
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserCreationHandler handler;
+    private final UserCreationHandler userCreationHandler;
+    private final UserEditOrCreateHandler userEditOrCreateHandler;
 
     @Autowired
-    public UserController(UserCreationHandler handler) {
-        this.handler = handler;
+    public UserController(UserCreationHandler userCreationHandler, UserEditOrCreateHandler userEditOrCreateHandler) {
+        this.userCreationHandler = userCreationHandler;
+        this.userEditOrCreateHandler = userEditOrCreateHandler;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public UUIDResponse create(@Validated @RequestBody UserCreationDTO requestUser) {
         UUID id = UUID.randomUUID();
-        handler.handle(id, requestUser);
+        userCreationHandler.handle(id, requestUser);
         return new UUIDResponse(id);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public UUIDResponse createOrEdit(@PathVariable UUID id, @Validated @RequestBody UserCreationDTO requestUser) {
-        handler.handle(id, requestUser);
+        userEditOrCreateHandler.handle(id, requestUser);
         return new UUIDResponse(id);
     }
 
