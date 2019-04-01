@@ -1,5 +1,6 @@
 package test.tutorial.dragoon.springboot.learningspringboot.domain.handler;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,20 +11,29 @@ import test.tutorial.dragoon.springboot.learningspringboot.domain.user.UserRepos
 import test.tutorial.dragoon.springboot.learningspringboot.dto.UserCreationDTO;
 
 @Service
-public class UserCreationHandler {
+public class UserEditOrCreateHandler {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final UserCreationHandler userCreationHandler;
 
     @Autowired
-    public UserCreationHandler(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserEditOrCreateHandler(UserRepository repository, PasswordEncoder passwordEncoder,
+                                   UserCreationHandler userCreationHandler) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.userCreationHandler = userCreationHandler;
     }
 
     public void handle(UUID id, UserCreationDTO dto) {
-        User user = new User(id, dto.getLogin(), passwordEncoder.encode(dto.getPassword()), dto.getName(),
-                dto.getSurname(), dto.getEmail());
-        repository.save(user);
+        Optional<User> user = repository.findById(id);
+
+        if (user.isPresent()) {
+            user.get().setUserData(dto.getName(), dto.getSurname(), dto.getEmail());
+            repository.save(user.get());
+        } else {
+            userCreationHandler.handle(id, dto);
+        }
     }
+
 }
